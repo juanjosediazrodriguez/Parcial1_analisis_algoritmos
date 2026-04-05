@@ -54,8 +54,14 @@ g++ -O2 -std=gnu++17 -o programa_2 ejercicio2/main.cpp
 
 ```
 Parcial1_analisis_algoritmos/
-├── main.cpp       # Ejercicio 1: Permutaciones con Restricciones (Fuerza Bruta)
-└── README.md      # Documentacion, analisis y respuestas
+├── ejercicio1/
+│   ├── main.cpp             # Implementacion Fuerza Bruta (permutaciones)
+│   └── pseudocodigo.txt     # Pseudocodigo del algoritmo
+├── ejercicio2/
+│   ├── main.cpp             # Implementacion Backtracking + Fuerza Bruta (coloracion)
+│   └── pseudocodigo.txt     # Pseudocodigo de ambos enfoques
+├── .gitignore               # Archivos excluidos del repositorio
+└── README.md                # Documentacion, analisis y respuestas
 ```
 
 ---

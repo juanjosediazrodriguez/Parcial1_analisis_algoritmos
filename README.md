@@ -229,20 +229,20 @@ resultado con `total_bt` para confirmar que ambos enfoques coinciden.
 Se probaron dos grafos con k=3 midiendo tiempos con `chrono::high_resolution_clock`:
 
 **Grafo 1: Ciclo C4 (n=4, m=4)**
-
+```
 0 1 0 1
 1 0 1 0
 0 1 0 1
 1 0 1 0
-
+```
 **Grafo 2: Grafo completo K5 (n=5, m=10)**
-
+```
 0 1 1 1 1
 1 0 1 1 1
 1 1 0 1 1
 1 1 1 0 1
 1 1 1 1 0
-
+```
 | Grafo       | n | k | Soluciones | Tiempo Backtracking | Tiempo Fuerza Bruta |
 |-------------|---|---|------------|---------------------|---------------------|
 | Ciclo C4    | 4 | 3 | 18         | ~0.01 ms            | ~0.05 ms            |

@@ -40,10 +40,12 @@ cd Parcial1_analisis_algoritmos
 Compilar cada ejercicio:
 ```bash
 # Ejercicio 1
-g++ -O2 -std=gnu++17 -o programa main.cpp
+g++ -O2 -std=gnu++17 -o programa_1 ejercicio1/main.cpp
+./programa_1
 
-# Ejecutar
-./programa
+# Ejercicio 2
+g++ -O2 -std=gnu++17 -o programa_2 ejercicio2/main.cpp
+./programa_2
 ```
 
 ---

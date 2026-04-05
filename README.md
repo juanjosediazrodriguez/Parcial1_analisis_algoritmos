@@ -9,8 +9,8 @@ Primer Trabajo Practico: Fuerza Bruta y Backtracking en C++
 
 | Nombre | Rol |
 |--------|-----|
-| Samuel Calderón | |
-| Juan José Diaz | |
+| Samuel Calderón |Analisis de complejidad e informe escrito de los dos ejercicios |
+| Juan José Diaz |Implementacion en C++ y pruebas de los dos ejercicios|
 
 ---
 

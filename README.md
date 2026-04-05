@@ -169,3 +169,177 @@ En lugar de generar permutaciones completas y luego verificarlas, el arbol de bu
 **3. ¿Por que se garantiza que next_permutation genera exactamente n! permutaciones si el arreglo esta ordenado inicialmente?**
 
 Porque n elementos distintos tienen exactamente n! ordenaciones posibles. La funcion next_permutation recorre cada una de ellas exactamente una vez en orden lexicografico ascendente, desde la permutacion minima (arreglo ordenado de menor a mayor) hasta la permutacion maxima (arreglo ordenado de mayor a menor). Al llegar a la permutacion maxima, devuelve false y el bucle termina. Si el arreglo no estuviera ordenado inicialmente, next_permutation comenzaria desde una permutacion intermedia y no recorreria todas las anteriores, generando menos de n! permutaciones.
+
+## Ejercicio 2 - Coloracion de Grafos con k Colores (Backtracking)
+
+### Descripcion del problema
+
+Dado un grafo no dirigido G = (V, E) con n vertices y m aristas, y un entero k
+de colores disponibles, se desea determinar si existe una asignacion de colores
+a los vertices tal que ningun par de vertices adyacentes comparta el mismo color.
+A esto se le llama una k-coloracion valida.
+
+El grafo se representa mediante una matriz de adyacencia. Los vertices se
+numeran de 0 a n-1 y los colores de 1 a k.
+
+---
+
+### Actividades requeridas
+
+---
+
+**Actividad 1 — Implementacion del Backtracking con poda**
+
+Se implemento la funcion `backtracking(int v)` que asigna un color valido al
+vertice v y avanza recursivamente al siguiente. La funcion auxiliar
+`esSeguros(int v, int c)` recorre los vecinos de v y retorna false si alguno
+ya tiene el color c. Si ningun color supera esa verificacion, el ciclo termina
+sin llamadas recursivas, podando la rama completa sin explorarla.
+
+---
+
+**Actividad 2 — Primera coloracion valida**
+
+Se uso el flag `primera_guardada` y el vector `primera_solucion`. La primera
+vez que el algoritmo llega al caso base (v == n), copia el arreglo `color` en
+`primera_solucion` y activa el flag para no sobreescribirla. Al finalizar se
+imprime en el formato `color[v] = c` para cada vertice.
+
+---
+
+**Actividad 3 — Conteo total de k-coloraciones validas**
+
+El contador `total_bt` se incrementa cada vez que el backtracking completa una
+asignacion valida (v == n). Al terminar se imprime el total junto con la
+primera solucion encontrada.
+
+---
+
+**Actividad 4 — Verificacion por Fuerza Bruta**
+
+La funcion `fuerzaBruta()` enumera las k^n combinaciones posibles codificando
+cada una como un numero en base k. Para cada combinacion se verifica que
+ninguna arista tenga ambos extremos del mismo color. Al final se compara el
+resultado con `total_bt` para confirmar que ambos enfoques coinciden.
+
+---
+
+**Actividad 5 — Comparacion de tiempos: Backtracking vs Fuerza Bruta**
+
+Se probaron dos grafos con k=3 midiendo tiempos con `chrono::high_resolution_clock`:
+
+**Grafo 1: Ciclo C4 (n=4, m=4)**
+
+0 1 0 1
+1 0 1 0
+0 1 0 1
+1 0 1 0
+
+**Grafo 2: Grafo completo K5 (n=5, m=10)**
+
+0 1 1 1 1
+1 0 1 1 1
+1 1 0 1 1
+1 1 1 0 1
+1 1 1 1 0
+
+| Grafo       | n | k | Soluciones | Tiempo Backtracking | Tiempo Fuerza Bruta |
+|-------------|---|---|------------|---------------------|---------------------|
+| Ciclo C4    | 4 | 3 | 18         | ~0.01 ms            | ~0.05 ms            |
+| Completo K5 | 5 | 3 | 0          | ~0.003 ms           | ~0.25 ms            |
+
+En K5 con k=3 el backtracking detecta rapidamente que no hay solucion y poda
+casi todo el arbol. La fuerza bruta recorre las 3^5 = 243 combinaciones sin
+ningun atajo.
+
+---
+
+**Actividad 6 — Complejidad temporal y espacial**
+
+**Backtracking**
+- Temporal (peor caso): O(k^n). Ocurre cuando no hay poda (grafo sin aristas).
+  En grafos con aristas, la poda reduce el numero de nodos visitados de forma
+  significativa pero no cambia el orden teorico del peor caso.
+- Espacial: O(n). El arreglo `color` y la pila de recursion tienen profundidad
+  maxima n.
+
+**Fuerza Bruta**
+- Temporal: O(k^n * n^2). Se evaluan las k^n combinaciones y por cada una se
+  recorren hasta n^2 pares de vertices para detectar conflictos.
+- Espacial: O(n). Solo se mantiene el vector `cols` de n elementos por
+  iteracion.
+
+La poda es mas efectiva cuanto mas denso es el grafo, ya que los conflictos
+aparecen antes en el arbol y se descartan ramas desde niveles altos. En grafos
+esparsos, la poda pierde efectividad y el backtracking se acerca al costo de
+la fuerza bruta.
+
+---
+
+### Preguntas guia
+
+---
+
+**1. ¿Cuantos nodos explora el Backtracking vs la Fuerza Bruta en el ejemplo?**
+
+La Fuerza Bruta evalua el arbol completo sin excepcion:
+
+k^0 + k^1 + k^2 + k^3 + k^4 = 1 + 3 + 9 + 27 + 81 = 121 nodos
+
+El Backtracking en el ciclo C4 con k=3 poda en cada nivel el color identico
+al vecino ya asignado, visitando aproximadamente 40 nodos en total, cerca de
+un tercio de lo que recorre la fuerza bruta.
+
+---
+
+**2. ¿Que tipo de grafo maximizaria el efecto de la poda? ¿Y cual lo minimizaria?**
+
+Maximiza la poda — Grafo completo K_n: cada vertice es adyacente a todos los
+demas. Al llegar al vertice v, todos los colores de sus vecinos anteriores ya
+estan ocupados. Si v >= k, `esSeguros` rechaza todos los colores desde ese
+nivel y la rama se descarta inmediatamente.
+
+Minimiza la poda — Grafo nulo (sin aristas): `esSeguros` siempre retorna true
+porque no hay ningun vecino que genere conflicto. El backtracking nunca poda
+ninguna rama y recorre los mismos k^n nodos que la fuerza bruta.
+
+---
+
+**3. ¿Que cambio se debe hacer si solo se quiere saber si existe al menos una
+k-coloracion?**
+
+Se cambia `backtracking` para que retorne un booleano y se detenga al
+encontrar la primera solucion:
+```cpp
+bool backtracking(int v) {
+    if (v == n) return true;
+    for (int c = 1; c <= k; c++) {
+        if (esSeguros(v, c)) {
+            color[v] = c;
+            if (backtracking(v + 1)) return true;
+            color[v] = 0;
+        }
+    }
+    return false;
+}
+```
+
+La linea `if (backtracking(v + 1)) return true` propaga el exito hacia arriba
+por toda la pila sin probar mas opciones, convirtiendo el problema de conteo
+en uno de decision con un ahorro potencialmente muy grande.
+
+---
+
+**4. Investigacion: ¿Que relacion existe con el Numero Cromatico del grafo?**
+
+El numero cromatico X(G) es el minimo k para el cual existe al menos una
+k-coloracion valida. La relacion con el algoritmo es directa:
+
+- k < X(G): el algoritmo no encuentra ninguna solucion.
+- k = X(G): el algoritmo encuentra soluciones con el minimo de colores posible.
+- k > X(G): existen soluciones pero usando mas colores de los necesarios.
+
+El backtracking puede usarse para calcular X(G) ejecutandolo con k = 1, 2, 3...
+y tomando el primer valor donde `total_bt > 0`. Determinar X(G) es un problema
+NP-dificil, por lo que no existe un algoritmo polinomial conocido para el caso
+general.

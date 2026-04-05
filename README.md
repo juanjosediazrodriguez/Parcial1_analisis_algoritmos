@@ -1,1 +1,163 @@
-# Parcial1_analisis_algoritmos
+# Proyecto 1 - Analisis y Diseno de Algoritmos
+
+**Universidad EAFIT — Analisis y Diseno de Algoritmos**
+Primer Trabajo Practico: Fuerza Bruta y Backtracking en C++
+
+---
+
+## Integrantes
+
+| Nombre | Rol |
+|--------|-----|
+| Samuel Calderón | |
+| Juan José Diaz | |
+
+---
+
+## Requisitos
+
+| Requisito | Version minima |
+|-----------|---------------|
+| Compilador C++ | g++ 11 o superior |
+| Estandar | C++17 |
+| Sistema operativo | Windows, Linux o macOS |
+
+Para verificar que tienes g++ instalado:
+```bash
+g++ --version
+```
+
+---
+
+## Compilacion y ejecucion
+
+Clonar el repositorio:
+```bash
+git clone <url-del-repositorio>
+cd Parcial1_analisis_algoritmos
+```
+
+Compilar cada ejercicio:
+```bash
+# Ejercicio 1
+g++ -O2 -std=gnu++17 -o programa main.cpp
+
+# Ejecutar
+./programa
+```
+
+---
+
+## Estructura del proyecto
+
+```
+Parcial1_analisis_algoritmos/
+├── main.cpp       # Ejercicio 1: Permutaciones con Restricciones (Fuerza Bruta)
+└── README.md      # Documentacion, analisis y respuestas
+```
+
+---
+
+## Ejercicio 1 - Permutaciones con Restricciones (Fuerza Bruta)
+
+### Descripcion del problema
+
+Dado un conjunto de n elementos distintos (enteros positivos), se generan todas las permutaciones posibles y se filtran las que cumplen la restriccion:
+
+```
+P[i] <= 2 * P[i+1]   para todo i en {0, 1, ..., n-2}
+```
+
+---
+
+### Actividades requeridas
+
+---
+
+**Actividad 1 — Justificacion del uso de next_permutation**
+
+Se eligio la funcion `next_permutation` de la STL de C++ en lugar de un algoritmo recursivo propio por las siguientes razones:
+
+- Es una funcion estandar, probada y eficiente incluida en `<algorithm>`.
+- Genera las permutaciones en orden lexicografico garantizando que, partiendo de un arreglo ordenado ascendentemente, recorre exactamente las n! permutaciones sin repetir ninguna.
+- Reduce la cantidad de codigo necesario y minimiza el riesgo de errores de implementacion.
+- El enunciado la permite explicitamente como opcion valida.
+
+Un algoritmo recursivo propio haria lo mismo internamente, pero requeriria implementar el intercambio de elementos y el control del estado de la recursion manualmente, sin ventaja alguna sobre la solucion con STL para este problema.
+
+---
+
+**Actividad 2 — Filtro de restriccion**
+
+Para cada permutacion generada se recorre el arreglo desde la posicion 0 hasta n-2 verificando que `A[i] <= 2 * A[i+1]`. Si en alguna posicion se viola la condicion, la permutacion se marca como invalida y se interrumpe la verificacion con `break`. Solo se imprimen las permutaciones que superan el filtro completo.
+
+---
+
+**Actividad 3 — Reporte de totales**
+
+El programa reporta al final:
+- `total_generadas`: contador que se incrementa en cada iteracion del bucle. Debe ser exactamente n! si el arreglo estaba ordenado antes de iniciar.
+- `total_validas`: contador que se incrementa solo cuando la permutacion pasa el filtro.
+- Listado completo de las permutaciones validas impreso durante la ejecucion.
+
+---
+
+**Actividad 4 — Por que es Fuerza Bruta y no Backtracking**
+
+Este enfoque se clasifica como Fuerza Bruta porque genera **todas** las permutaciones completas primero y **luego** verifica si cada una cumple la restriccion. No abandona ninguna permutacion a mitad de construccion, independientemente de si ya se puede saber que sera invalida.
+
+El Backtracking, en cambio, construye la solucion posicion por posicion y en cuanto detecta que la solucion parcial ya viola la restriccion, poda esa rama completa sin explorar las combinaciones que quedan. En Fuerza Bruta no hay poda: se evalua el 100% de las n! permutaciones sin excepcion.
+
+---
+
+**Actividad 5 — Complejidad temporal y espacial**
+
+**Complejidad Temporal: O(n! x n)**
+
+- El bucle `do-while` con `next_permutation` itera exactamente n! veces (una por cada permutacion posible).
+- En cada iteracion se ejecuta un ciclo `for` de hasta n-1 pasos para verificar la restriccion.
+- Por tanto, el total de operaciones es proporcional a n! * n.
+- Como n! domina completamente sobre n para valores grandes, la complejidad se puede expresar tambien como O(n! * n) ~ O(n * n!).
+
+**Complejidad Espacial: O(n)**
+
+- Solo se mantiene en memoria el arreglo `A` de n elementos en un momento dado.
+- No se almacenan todas las permutaciones al mismo tiempo; se procesan y descartan de una en una.
+- El espacio adicional usado por `next_permutation` es O(1).
+- Total: O(n).
+
+---
+
+**Actividad 6 — Medicion experimental: ¿a partir de que n se vuelve impracticable?**
+
+Se midio el tiempo de ejecucion del algoritmo para distintos valores de n usando conjuntos de enteros consecutivos {1, 2, ..., n}. Los tiempos se midieron con `std::chrono::high_resolution_clock`.
+
+| n  | Permutaciones (n!) | Tiempo aproximado |
+|----|-------------------|-------------------|
+| 8  | 40,320            | 3456.71 ms           |
+| 10 | 3,628,800         | 51868.3 ms            |
+| 12 | No determinado       | Aquí se vuelve impracticable  |
+
+> Nota: los tiempos exactos dependen del equipo. Actualizar esta tabla con los valores medidos al compilar y ejecutar el programa con la opcion de cronometro.
+
+---
+
+### Preguntas guia
+
+---
+
+**1. ¿Que ocurre con la proporcion de permutaciones validas respecto al total a medida que n crece?**
+
+La proporcion de permutaciones validas disminuye drasticamente a medida que n crece. El total de permutaciones crece como n! (factorial), que aumenta de forma explosiva. Sin embargo, las permutaciones validas crecen mucho mas lento, ya que la restriccion P[i] <= 2*P[i+1] es cada vez mas dificil de satisfacer en todas las posiciones simultaneamente cuando hay mas elementos. Por ejemplo, con n=3 se validan 3 de 6 permutaciones (50%), pero con n=6 o mas, la proporcion cae considerablemente.
+
+---
+
+**2. Si se quisiera mejorar el enfoque con Backtracking (poda temprana), ¿en que paso del algoritmo se podria construir el arbol de busqueda?**
+
+En lugar de generar permutaciones completas y luego verificarlas, el arbol de busqueda se construiria posicion por posicion. Al intentar colocar el elemento en la posicion i, se verificaria inmediatamente si el elemento ya colocado en la posicion i-1 cumple P[i-1] <= 2*P[i]. Si no cumple, se descarta esa rama completa sin explorar ninguna de las (n-i-1)! permutaciones restantes que podrian completarla. Esto elimina subarboles enteros del espacio de busqueda en lugar de evaluar cada permutacion al final.
+
+---
+
+**3. ¿Por que se garantiza que next_permutation genera exactamente n! permutaciones si el arreglo esta ordenado inicialmente?**
+
+Porque n elementos distintos tienen exactamente n! ordenaciones posibles. La funcion next_permutation recorre cada una de ellas exactamente una vez en orden lexicografico ascendente, desde la permutacion minima (arreglo ordenado de menor a mayor) hasta la permutacion maxima (arreglo ordenado de mayor a menor). Al llegar a la permutacion maxima, devuelve false y el bucle termina. Si el arreglo no estuviera ordenado inicialmente, next_permutation comenzaria desde una permutacion intermedia y no recorreria todas las anteriores, generando menos de n! permutaciones.

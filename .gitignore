@@ -1,0 +1,17 @@
+# Ejecutables
+*.exe
+*.out
+programa
+prog
+
+# Archivos objeto y de compilacion
+*.o
+*.obj
+
+# Archivos de debug
+*.pdb
+*.ilk
+
+# Carpetas de IDEs
+.vscode/
+.idea/

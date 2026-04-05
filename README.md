@@ -1,6 +1,6 @@
-# Proyecto 1 - Analisis y Diseno de Algoritmos
+# Proyecto 1 - Analisis y Diseño de Algoritmos
 
-**Universidad EAFIT — Analisis y Diseno de Algoritmos**
+**Universidad EAFIT — Analisis y Diseño de Algoritmos**
 Primer Trabajo Practico: Fuerza Bruta y Backtracking en C++
 
 ---

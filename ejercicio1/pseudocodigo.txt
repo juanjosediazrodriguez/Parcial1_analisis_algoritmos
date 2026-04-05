@@ -1,0 +1,44 @@
+=====================================================
+ Ejercicio 1 - Permutaciones con Restricciones
+ Enfoque: Fuerza Bruta
+=====================================================
+
+ENTRADA:
+  n          -> cantidad de elementos
+  A[0..n-1]  -> conjunto de n enteros positivos distintos
+
+SALIDA:
+  Lista de permutaciones validas
+  total_generadas (debe ser n!)
+  total_validas
+
+-----------------------------------------------------
+PSEUDOCODIGO
+-----------------------------------------------------
+
+leer n
+leer A[0..n-1]        // conjunto de enteros distintos
+ordenar A asc         // garantiza comenzar desde la permutacion menor
+
+total_generadas = 0
+total_validas   = 0
+
+hacer:
+    total_generadas += 1
+    valida = verdadero
+
+    para i en [0..n-2]:
+        si A[i] > 2 * A[i+1]:
+            valida = falso
+            break
+
+    si valida:
+        imprimir A
+        total_validas += 1
+
+mientras next_permutation(A) exista
+
+imprimir "total_generadas =", total_generadas
+imprimir "total_validas   =", total_validas
+
+

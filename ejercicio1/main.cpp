@@ -1,17 +1,4 @@
-/*
- * Ejercicio 1 - Permutaciones con Restricciones (Fuerza Bruta)
- *
- * Dado un conjunto de n elementos distintos, genero todas las permutaciones
- * posibles usando next_permutation y filtro las que cumplen la condicion:
- *   P[i] <= 2 * P[i+1]  para todo i en {0, 1, ..., n-2}
- *
- * Clasifico este enfoque como Fuerza Bruta porque genero y evaluo
- * absolutamente todas las n! permutaciones sin descartar ninguna
- * a mitad de construccion (no hay poda).
- *
- * Complejidad temporal: O(n! * n)
- * Complejidad espacial: O(n)
- */
+
 
 #include <iostream>
 #include <vector>
@@ -23,7 +10,7 @@ int main() {
 
     cout << "=== Ejercicio 1: Permutaciones con Restriccion ===\n\n";
 
-    // ── leer entrada ──────────────────────────────────────
+    // leer entrada 
     int n;
     cout << "Ingrese la cantidad de elementos: ";
     cin >> n;
@@ -32,7 +19,7 @@ int main() {
     cout << "Ingrese los " << n << " elementos (distintos): ";
     for (int i = 0; i < n; i++) cin >> A[i];
 
-    // ── ordenar el arreglo ────────────────────────────────
+    // ordenar el arreglo
     // Esto es obligatorio antes de usar next_permutation.
     // La funcion recorre permutaciones en orden lexicografico
     // ascendente, entonces necesita partir del arreglo en su
@@ -45,7 +32,7 @@ int main() {
 
     cout << "\n--- Permutaciones validas ---\n";
 
-    // ── inicio del cronometro ─────────────────────────────
+    //  inicio del cronometro 
     // Uso high_resolution_clock porque es el reloj mas preciso
     // que ofrece C++. Lo inicio justo antes del algoritmo para
     // medir solo el tiempo de procesamiento, no el de entrada.
@@ -83,7 +70,7 @@ int main() {
     // y el bucle termina. En total itera exactamente n! veces.
     } while (next_permutation(A.begin(), A.end()));
 
-    // ── fin del cronometro ────────────────────────────────
+    // fin del cronometro
     auto fin = chrono::high_resolution_clock::now();
     // convierto la diferencia de tiempo a milisegundos
     double ms = chrono::duration<double, milli>(fin - inicio).count();

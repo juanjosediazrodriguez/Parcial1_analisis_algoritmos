@@ -1,0 +1,91 @@
+
+ Ejercicio 2 - Coloracion de Grafos con k Colores
+ Enfoques: Backtracking + Fuerza Bruta
+
+
+ENTRADA:
+  n                      -> numero de vertices (0 a n-1)
+  k                      -> numero de colores disponibles (1 a k)
+  matriz_ady[0..n-1][0..n-1] -> 1 si hay arista, 0 si no
+
+SALIDA:
+  Primera coloracion valida encontrada
+  Total de k-coloraciones validas (Backtracking)
+  Total de k-coloraciones validas (Fuerza Bruta, debe coincidir)
+  Tiempo de ejecucion de cada enfoque
+
+
+PSEUDOCODIGO - FUNCION AUXILIAR: es_seguro-
+
+// Verifica si puedo asignar el color c al vertice v
+// sin que conflictue con sus vecinos ya coloreados
+
+es_seguro(v, c):
+    para u desde 0 hasta n-1:
+        si matriz_ady[v][u] == 1 Y color[u] == c:
+            retornar falso     // conflicto: vecino ya tiene ese color
+    retornar verdadero
+
+
+PSEUDOCODIGO - BACKTRACKING
+
+
+color[0..n-1] = 0          // 0 significa sin color asignado
+total_soluciones = 0
+primera_guardada = falso
+
+bt(v):
+    si v == n:              // caso base: todos los vertices coloreados
+        total_soluciones += 1
+        si !primera_guardada:
+            guardar color[]
+            primera_guardada = verdadero
+        retornar
+
+    para c desde 1 hasta k:
+        si es_seguro(v, c):
+            color[v] = c        // asignamos el color
+            bt(v + 1)           // avanzamos al siguiente vertice
+            color[v] = 0        // BACKTRACK: deshacemos para probar otro color
+        // si no es seguro, lo saltamos directamente (PODA)
+
+bt(0)   // iniciamos desde el vertice 0
+
+si total_soluciones == 0:
+    imprimir "No existe una k-coloracion valida"
+si no:
+    imprimir "Total de k-coloraciones:", total_soluciones
+    imprimir "Primera solucion:", color guardado
+
+
+PSEUDOCODIGO - FUERZA BRUTA
+
+
+// Prueba las k^n combinaciones posibles sin ninguna poda
+
+total_fb = 0
+combinaciones = k^n
+
+para mask desde 0 hasta combinaciones-1:
+
+    // convertir mask a asignacion de colores en base k
+    temp = mask
+    para i desde 0 hasta n-1:
+        cols[i] = (temp mod k) + 1   // colores de 1 a k
+        temp = temp / k
+
+    // verificar todas las aristas del grafo
+    valida = verdadero
+    para u desde 0 hasta n-1:
+        para v desde u+1 hasta n-1:
+            si matriz_ady[u][v] == 1 Y cols[u] == cols[v]:
+                valida = falso
+                salir
+
+    si valida:
+        total_fb += 1
+
+imprimir "Fuerza Bruta confirma:", total_fb
+
+
+

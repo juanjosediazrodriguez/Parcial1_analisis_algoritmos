@@ -1,20 +1,20 @@
-=====================================================
+
  Ejercicio 1 - Permutaciones con Restricciones
  Enfoque: Fuerza Bruta
-=====================================================
+
 
 ENTRADA:
-  n          -> cantidad de elementos
-  A[0..n-1]  -> conjunto de n enteros positivos distintos
+  n           cantidad de elementos
+  A[0..n-1]   conjunto de n enteros positivos distintos
 
 SALIDA:
   Lista de permutaciones validas
   total_generadas (debe ser n!)
   total_validas
 
------------------------------------------------------
+
 PSEUDOCODIGO
------------------------------------------------------
+
 
 leer n
 leer A[0..n-1]        // conjunto de enteros distintos

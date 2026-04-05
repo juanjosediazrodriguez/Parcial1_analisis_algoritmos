@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <vector>
 #include <algorithm> // next_permutation, sort
@@ -8,7 +6,7 @@ using namespace std;
 
 int main() {
 
-    cout << "=== Ejercicio 1: Permutaciones con Restriccion ===\n\n";
+    cout << " Ejercicio 1: Permutaciones con Restriccion \n\n";
 
     // leer entrada 
     int n;
@@ -30,7 +28,7 @@ int main() {
     int total_generadas = 0; // debe llegar exactamente a n!
     int total_validas   = 0; // solo las que cumplen la restriccion
 
-    cout << "\n--- Permutaciones validas ---\n";
+    cout << "\n Permutaciones validas \n";
 
     //  inicio del cronometro 
     // Uso high_resolution_clock porque es el reloj mas preciso
@@ -38,14 +36,14 @@ int main() {
     // medir solo el tiempo de procesamiento, no el de entrada.
     auto inicio = chrono::high_resolution_clock::now();
 
-    // ── bucle principal: recorre todas las permutaciones ──
+    //  bucle principal: recorre todas las permutaciones 
     // Uso do-while para que la primera permutacion (el arreglo
     // ordenado) tambien sea evaluada antes de llamar a
     // next_permutation por primera vez.
     do {
         total_generadas++;
 
-        // ── verificar la restriccion P[i] <= 2 * P[i+1] ──
+        //  verificar la restriccion P[i] <= 2 * P[i+1] 
         // Recorro cada par consecutivo. Si alguno la viola,
         // marco la permutacion como invalida y salgo del for
         // con break para no hacer comparaciones innecesarias.
@@ -75,7 +73,7 @@ int main() {
     // convierto la diferencia de tiempo a milisegundos
     double ms = chrono::duration<double, milli>(fin - inicio).count();
 
-    // ── resultados finales ────────────────────────────────
+    //  resultados finales 
     cout << "\nTotal generadas : " << total_generadas << "\n";
     cout << "Total validas   : " << total_validas   << "\n";
     cout << "Tiempo          : " << ms << " ms\n";
